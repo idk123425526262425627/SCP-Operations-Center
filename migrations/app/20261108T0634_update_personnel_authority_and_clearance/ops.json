@@ -1,0 +1,1085 @@
+[
+  {
+    "id": "renameColumn.Personnel.clearance",
+    "label": "Rename column \"Personnel\".\"clearance\" to \"securityClearance\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "securityClearance",
+        "table": "Personnel"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"clearance\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Personnel",
+          "clearance"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "column \"clearance\" on \"Personnel\""
+        }
+      },
+      {
+        "description": "ensure column \"securityClearance\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Personnel",
+          "securityClearance"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "column \"securityClearance\" on \"Personnel\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename column \"clearance\" to \"securityClearance\"",
+        "sql": "ALTER TABLE \"public\".\"Personnel\" RENAME COLUMN \"clearance\" TO \"securityClearance\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"securityClearance\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Personnel",
+          "securityClearance"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "column \"securityClearance\" on \"Personnel\""
+        }
+      },
+      {
+        "description": "verify column \"clearance\" no longer exists",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Personnel",
+          "clearance"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "column \"clearance\" on \"Personnel\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "index.public.Personnel.Personnel_clearance_idx_fbfe5df6.rename",
+    "label": "Rename index \"Personnel_clearance_idx_fbfe5df6\" to \"Personnel_securityClearance_idx_a61977ba\" on \"Personnel\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Personnel_securityClearance_idx_a61977ba",
+        "table": "Personnel"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Personnel_clearance_idx_fbfe5df6\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Personnel_clearance_idx_fbfe5df6\""
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "index \"Personnel_clearance_idx_fbfe5df6\""
+        }
+      },
+      {
+        "description": "ensure index \"Personnel_securityClearance_idx_a61977ba\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Personnel_securityClearance_idx_a61977ba\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"Personnel_securityClearance_idx_a61977ba\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename index \"Personnel_clearance_idx_fbfe5df6\" to \"Personnel_securityClearance_idx_a61977ba\"",
+        "sql": "ALTER INDEX \"public\".\"Personnel_clearance_idx_fbfe5df6\" RENAME TO \"Personnel_securityClearance_idx_a61977ba\"",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Personnel_securityClearance_idx_a61977ba\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Personnel_securityClearance_idx_a61977ba\""
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "index \"Personnel_securityClearance_idx_a61977ba\""
+        }
+      },
+      {
+        "description": "verify index \"Personnel_clearance_idx_fbfe5df6\" no longer exists",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Personnel_clearance_idx_fbfe5df6\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"Personnel_clearance_idx_fbfe5df6\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "renameColumn.PersonnelRecord.minimumEditClearance",
+    "label": "Rename column \"PersonnelRecord\".\"minimumEditClearance\" to \"minimumEditSecurityClearance\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "minimumEditSecurityClearance",
+        "table": "PersonnelRecord"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"minimumEditClearance\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "PersonnelRecord",
+          "minimumEditClearance"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "column \"minimumEditClearance\" on \"PersonnelRecord\""
+        }
+      },
+      {
+        "description": "ensure column \"minimumEditSecurityClearance\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "PersonnelRecord",
+          "minimumEditSecurityClearance"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "column \"minimumEditSecurityClearance\" on \"PersonnelRecord\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename column \"minimumEditClearance\" to \"minimumEditSecurityClearance\"",
+        "sql": "ALTER TABLE \"public\".\"PersonnelRecord\" RENAME COLUMN \"minimumEditClearance\" TO \"minimumEditSecurityClearance\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"minimumEditSecurityClearance\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "PersonnelRecord",
+          "minimumEditSecurityClearance"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "column \"minimumEditSecurityClearance\" on \"PersonnelRecord\""
+        }
+      },
+      {
+        "description": "verify column \"minimumEditClearance\" no longer exists",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "PersonnelRecord",
+          "minimumEditClearance"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "column \"minimumEditClearance\" on \"PersonnelRecord\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "renameColumn.PersonnelRecord.minimumViewClearance",
+    "label": "Rename column \"PersonnelRecord\".\"minimumViewClearance\" to \"minimumViewSecurityClearance\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "minimumViewSecurityClearance",
+        "table": "PersonnelRecord"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"minimumViewClearance\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "PersonnelRecord",
+          "minimumViewClearance"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "column \"minimumViewClearance\" on \"PersonnelRecord\""
+        }
+      },
+      {
+        "description": "ensure column \"minimumViewSecurityClearance\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "PersonnelRecord",
+          "minimumViewSecurityClearance"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "column \"minimumViewSecurityClearance\" on \"PersonnelRecord\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename column \"minimumViewClearance\" to \"minimumViewSecurityClearance\"",
+        "sql": "ALTER TABLE \"public\".\"PersonnelRecord\" RENAME COLUMN \"minimumViewClearance\" TO \"minimumViewSecurityClearance\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"minimumViewSecurityClearance\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "PersonnelRecord",
+          "minimumViewSecurityClearance"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "column \"minimumViewSecurityClearance\" on \"PersonnelRecord\""
+        }
+      },
+      {
+        "description": "verify column \"minimumViewClearance\" no longer exists",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "PersonnelRecord",
+          "minimumViewClearance"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "column \"minimumViewClearance\" on \"PersonnelRecord\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "renameColumn.Rank.requiredClearance",
+    "label": "Rename column \"Rank\".\"requiredClearance\" to \"requiredSecurityClearance\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "requiredSecurityClearance",
+        "table": "Rank"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"requiredClearance\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Rank",
+          "requiredClearance"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "column \"requiredClearance\" on \"Rank\""
+        }
+      },
+      {
+        "description": "ensure column \"requiredSecurityClearance\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Rank",
+          "requiredSecurityClearance"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "column \"requiredSecurityClearance\" on \"Rank\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename column \"requiredClearance\" to \"requiredSecurityClearance\"",
+        "sql": "ALTER TABLE \"public\".\"Rank\" RENAME COLUMN \"requiredClearance\" TO \"requiredSecurityClearance\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"requiredSecurityClearance\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Rank",
+          "requiredSecurityClearance"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "column \"requiredSecurityClearance\" on \"Rank\""
+        }
+      },
+      {
+        "description": "verify column \"requiredClearance\" no longer exists",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Rank",
+          "requiredClearance"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "column \"requiredClearance\" on \"Rank\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "dropColumn.Personnel.classification",
+    "label": "Drop column \"classification\" from \"Personnel\"",
+    "operationClass": "destructive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "classification",
+        "table": "Personnel"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"classification\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Personnel",
+          "classification"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "column \"classification\" on \"Personnel\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop column \"classification\"",
+        "sql": "ALTER TABLE \"public\".\"Personnel\" DROP COLUMN \"classification\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"classification\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Personnel",
+          "classification"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "column \"classification\" on \"Personnel\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "dropDefault.Personnel.securityClearance",
+    "label": "Drop default on \"Personnel\".\"securityClearance\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "securityClearance",
+        "table": "Personnel"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"securityClearance\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Personnel",
+          "securityClearance"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "column \"securityClearance\" on \"Personnel\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop default on \"securityClearance\"",
+        "sql": "ALTER TABLE \"public\".\"Personnel\" ALTER COLUMN \"securityClearance\" DROP DEFAULT"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"securityClearance\" has no default",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3 AND \"column_default\" IS NULL)) AS \"result\"",
+        "params": [
+          "public",
+          "Personnel",
+          "securityClearance"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.public.Personnel.authorityClassification",
+    "label": "Add column \"authorityClassification\" to \"Personnel\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "authorityClassification",
+        "table": "Personnel"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"authorityClassification\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Personnel",
+          "authorityClassification"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "column \"authorityClassification\" on \"Personnel\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"authorityClassification\"",
+        "sql": "ALTER TABLE \"public\".\"Personnel\" ADD COLUMN \"authorityClassification\" text"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"authorityClassification\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Personnel",
+          "authorityClassification"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "column \"authorityClassification\" on \"Personnel\""
+        }
+      },
+      {
+        "description": "verify column \"authorityClassification\" has type \"text\"",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_attribute\" AS \"a\" INNER JOIN \"pg_class\" AS \"c\" ON \"c\".\"oid\" = \"a\".\"attrelid\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"relnamespace\" WHERE (\"n\".\"nspname\" = $1 AND \"c\".\"relname\" = $2 AND \"a\".\"attname\" = $3 AND (format_type(\"a\".\"atttypid\", \"a\".\"atttypmod\")) = $4 AND NOT (\"a\".\"attisdropped\"))) AS \"result\"",
+        "params": [
+          "public",
+          "Personnel",
+          "authorityClassification",
+          "text"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "alterNullability.dropNotNull.Personnel.securityClearance",
+    "label": "Drop NOT NULL on \"Personnel\".\"securityClearance\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "securityClearance",
+        "table": "Personnel"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"securityClearance\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Personnel",
+          "securityClearance"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "column \"securityClearance\" on \"Personnel\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop NOT NULL on \"securityClearance\"",
+        "sql": "ALTER TABLE \"public\".\"Personnel\" ALTER COLUMN \"securityClearance\" DROP NOT NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"securityClearance\" is nullable",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3 AND \"is_nullable\" = $4)) AS \"result\"",
+        "params": [
+          "public",
+          "Personnel",
+          "securityClearance",
+          "YES"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "alterType.Personnel.securityClearance",
+    "label": "Alter type of \"Personnel\".\"securityClearance\" to text",
+    "operationClass": "data",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "securityClearance",
+        "table": "Personnel"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"securityClearance\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Personnel",
+          "securityClearance"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "column \"securityClearance\" on \"Personnel\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "alter type of \"securityClearance\" to text",
+        "sql": "ALTER TABLE \"public\".\"Personnel\" ALTER COLUMN \"securityClearance\" TYPE text USING CASE WHEN \"securityClearance\" = 0 THEN NULL ELSE \"securityClearance\"::text END",
+        "meta": {
+          "convertedColumn": {
+            "table": "Personnel",
+            "column": "securityClearance",
+            "by": "conversion"
+          }
+        }
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"securityClearance\" has type \"text\"",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_attribute\" AS \"a\" INNER JOIN \"pg_class\" AS \"c\" ON \"c\".\"oid\" = \"a\".\"attrelid\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"relnamespace\" WHERE (\"n\".\"nspname\" = $1 AND \"c\".\"relname\" = $2 AND \"a\".\"attname\" = $3 AND (format_type(\"a\".\"atttypid\", \"a\".\"atttypmod\")) = $4 AND NOT (\"a\".\"attisdropped\"))) AS \"result\"",
+        "params": [
+          "public",
+          "Personnel",
+          "securityClearance",
+          "text"
+        ]
+      }
+    ],
+    "meta": {
+      "warning": "TABLE_REWRITE"
+    }
+  },
+  {
+    "id": "alterType.PersonnelRecord.minimumEditSecurityClearance",
+    "label": "Alter type of \"PersonnelRecord\".\"minimumEditSecurityClearance\" to text",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "minimumEditSecurityClearance",
+        "table": "PersonnelRecord"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"minimumEditSecurityClearance\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "PersonnelRecord",
+          "minimumEditSecurityClearance"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "column \"minimumEditSecurityClearance\" on \"PersonnelRecord\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "alter type of \"minimumEditSecurityClearance\" to text",
+        "sql": "ALTER TABLE \"public\".\"PersonnelRecord\" ALTER COLUMN \"minimumEditSecurityClearance\" TYPE text USING \"minimumEditSecurityClearance\"::text"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"minimumEditSecurityClearance\" has type \"text\"",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_attribute\" AS \"a\" INNER JOIN \"pg_class\" AS \"c\" ON \"c\".\"oid\" = \"a\".\"attrelid\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"relnamespace\" WHERE (\"n\".\"nspname\" = $1 AND \"c\".\"relname\" = $2 AND \"a\".\"attname\" = $3 AND (format_type(\"a\".\"atttypid\", \"a\".\"atttypmod\")) = $4 AND NOT (\"a\".\"attisdropped\"))) AS \"result\"",
+        "params": [
+          "public",
+          "PersonnelRecord",
+          "minimumEditSecurityClearance",
+          "text"
+        ]
+      }
+    ],
+    "meta": {
+      "warning": "TABLE_REWRITE"
+    }
+  },
+  {
+    "id": "setDefault.PersonnelRecord.minimumEditSecurityClearance",
+    "label": "Set default on \"PersonnelRecord\".\"minimumEditSecurityClearance\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "minimumEditSecurityClearance",
+        "table": "PersonnelRecord"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"minimumEditSecurityClearance\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "PersonnelRecord",
+          "minimumEditSecurityClearance"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "column \"minimumEditSecurityClearance\" on \"PersonnelRecord\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "set default on \"minimumEditSecurityClearance\"",
+        "sql": "ALTER TABLE \"public\".\"PersonnelRecord\" ALTER COLUMN \"minimumEditSecurityClearance\" SET DEFAULT 'LEVEL_4'"
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "alterType.PersonnelRecord.minimumViewSecurityClearance",
+    "label": "Alter type of \"PersonnelRecord\".\"minimumViewSecurityClearance\" to text",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "minimumViewSecurityClearance",
+        "table": "PersonnelRecord"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"minimumViewSecurityClearance\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "PersonnelRecord",
+          "minimumViewSecurityClearance"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "column \"minimumViewSecurityClearance\" on \"PersonnelRecord\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "alter type of \"minimumViewSecurityClearance\" to text",
+        "sql": "ALTER TABLE \"public\".\"PersonnelRecord\" ALTER COLUMN \"minimumViewSecurityClearance\" TYPE text USING \"minimumViewSecurityClearance\"::text"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"minimumViewSecurityClearance\" has type \"text\"",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_attribute\" AS \"a\" INNER JOIN \"pg_class\" AS \"c\" ON \"c\".\"oid\" = \"a\".\"attrelid\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"relnamespace\" WHERE (\"n\".\"nspname\" = $1 AND \"c\".\"relname\" = $2 AND \"a\".\"attname\" = $3 AND (format_type(\"a\".\"atttypid\", \"a\".\"atttypmod\")) = $4 AND NOT (\"a\".\"attisdropped\"))) AS \"result\"",
+        "params": [
+          "public",
+          "PersonnelRecord",
+          "minimumViewSecurityClearance",
+          "text"
+        ]
+      }
+    ],
+    "meta": {
+      "warning": "TABLE_REWRITE"
+    }
+  },
+  {
+    "id": "setDefault.PersonnelRecord.minimumViewSecurityClearance",
+    "label": "Set default on \"PersonnelRecord\".\"minimumViewSecurityClearance\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "minimumViewSecurityClearance",
+        "table": "PersonnelRecord"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"minimumViewSecurityClearance\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "PersonnelRecord",
+          "minimumViewSecurityClearance"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "column \"minimumViewSecurityClearance\" on \"PersonnelRecord\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "set default on \"minimumViewSecurityClearance\"",
+        "sql": "ALTER TABLE \"public\".\"PersonnelRecord\" ALTER COLUMN \"minimumViewSecurityClearance\" SET DEFAULT 'LEVEL_2'"
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "alterType.Rank.requiredSecurityClearance",
+    "label": "Alter type of \"Rank\".\"requiredSecurityClearance\" to text",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "requiredSecurityClearance",
+        "table": "Rank"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"requiredSecurityClearance\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Rank",
+          "requiredSecurityClearance"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "column \"requiredSecurityClearance\" on \"Rank\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "alter type of \"requiredSecurityClearance\" to text",
+        "sql": "ALTER TABLE \"public\".\"Rank\" ALTER COLUMN \"requiredSecurityClearance\" TYPE text USING \"requiredSecurityClearance\"::text"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"requiredSecurityClearance\" has type \"text\"",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_attribute\" AS \"a\" INNER JOIN \"pg_class\" AS \"c\" ON \"c\".\"oid\" = \"a\".\"attrelid\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"relnamespace\" WHERE (\"n\".\"nspname\" = $1 AND \"c\".\"relname\" = $2 AND \"a\".\"attname\" = $3 AND (format_type(\"a\".\"atttypid\", \"a\".\"atttypmod\")) = $4 AND NOT (\"a\".\"attisdropped\"))) AS \"result\"",
+        "params": [
+          "public",
+          "Rank",
+          "requiredSecurityClearance",
+          "text"
+        ]
+      }
+    ],
+    "meta": {
+      "warning": "TABLE_REWRITE"
+    }
+  },
+  {
+    "id": "setDefault.Rank.requiredSecurityClearance",
+    "label": "Set default on \"Rank\".\"requiredSecurityClearance\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "requiredSecurityClearance",
+        "table": "Rank"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"requiredSecurityClearance\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Rank",
+          "requiredSecurityClearance"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "column \"requiredSecurityClearance\" on \"Rank\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "set default on \"requiredSecurityClearance\"",
+        "sql": "ALTER TABLE \"public\".\"Rank\" ALTER COLUMN \"requiredSecurityClearance\" SET DEFAULT 'LEVEL_0'"
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "index.Personnel.Personnel_authorityClassification_idx_6271eedf",
+    "label": "Create index \"Personnel_authorityClassification_idx_6271eedf\" on \"Personnel\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Personnel_authorityClassification_idx_6271eedf",
+        "table": "Personnel"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Personnel_authorityClassification_idx_6271eedf\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Personnel_authorityClassification_idx_6271eedf\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"Personnel_authorityClassification_idx_6271eedf\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Personnel_authorityClassification_idx_6271eedf\"",
+        "sql": "CREATE INDEX \"Personnel_authorityClassification_idx_6271eedf\" ON \"public\".\"Personnel\" (\"authorityClassification\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Personnel_authorityClassification_idx_6271eedf\" exists on \"Personnel\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"Personnel_authorityClassification_idx_6271eedf\"",
+          "i",
+          "I",
+          "\"public\".\"Personnel\"",
+          "btree",
+          "[\"authorityClassification\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.PersonnelRecord.PersonnelRecord_minimumEditSecurityClearance_idx_fdcc343f",
+    "label": "Create index \"PersonnelRecord_minimumEditSecurityClearance_idx_fdcc343f\" on \"PersonnelRecord\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "PersonnelRecord_minimumEditSecurityClearance_idx_fdcc343f",
+        "table": "PersonnelRecord"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"PersonnelRecord_minimumEditSecurityClearance_idx_fdcc343f\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"PersonnelRecord_minimumEditSecurityClearance_idx_fdcc343f\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"PersonnelRecord_minimumEditSecurityClearance_idx_fdcc343f\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"PersonnelRecord_minimumEditSecurityClearance_idx_fdcc343f\"",
+        "sql": "CREATE INDEX \"PersonnelRecord_minimumEditSecurityClearance_idx_fdcc343f\" ON \"public\".\"PersonnelRecord\" (\"minimumEditSecurityClearance\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"PersonnelRecord_minimumEditSecurityClearance_idx_fdcc343f\" exists on \"PersonnelRecord\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"PersonnelRecord_minimumEditSecurityClearance_idx_fdcc343f\"",
+          "i",
+          "I",
+          "\"public\".\"PersonnelRecord\"",
+          "btree",
+          "[\"minimumEditSecurityClearance\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.PersonnelRecord.PersonnelRecord_minimumViewSecurityClearance_idx_0c5ac5e5",
+    "label": "Create index \"PersonnelRecord_minimumViewSecurityClearance_idx_0c5ac5e5\" on \"PersonnelRecord\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "PersonnelRecord_minimumViewSecurityClearance_idx_0c5ac5e5",
+        "table": "PersonnelRecord"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"PersonnelRecord_minimumViewSecurityClearance_idx_0c5ac5e5\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"PersonnelRecord_minimumViewSecurityClearance_idx_0c5ac5e5\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"PersonnelRecord_minimumViewSecurityClearance_idx_0c5ac5e5\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"PersonnelRecord_minimumViewSecurityClearance_idx_0c5ac5e5\"",
+        "sql": "CREATE INDEX \"PersonnelRecord_minimumViewSecurityClearance_idx_0c5ac5e5\" ON \"public\".\"PersonnelRecord\" (\"minimumViewSecurityClearance\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"PersonnelRecord_minimumViewSecurityClearance_idx_0c5ac5e5\" exists on \"PersonnelRecord\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"PersonnelRecord_minimumViewSecurityClearance_idx_0c5ac5e5\"",
+          "i",
+          "I",
+          "\"public\".\"PersonnelRecord\"",
+          "btree",
+          "[\"minimumViewSecurityClearance\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Rank.Rank_requiredSecurityClearance_idx_7809e355",
+    "label": "Create index \"Rank_requiredSecurityClearance_idx_7809e355\" on \"Rank\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Rank_requiredSecurityClearance_idx_7809e355",
+        "table": "Rank"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Rank_requiredSecurityClearance_idx_7809e355\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Rank_requiredSecurityClearance_idx_7809e355\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"Rank_requiredSecurityClearance_idx_7809e355\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Rank_requiredSecurityClearance_idx_7809e355\"",
+        "sql": "CREATE INDEX \"Rank_requiredSecurityClearance_idx_7809e355\" ON \"public\".\"Rank\" (\"requiredSecurityClearance\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Rank_requiredSecurityClearance_idx_7809e355\" exists on \"Rank\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"Rank_requiredSecurityClearance_idx_7809e355\"",
+          "i",
+          "I",
+          "\"public\".\"Rank\"",
+          "btree",
+          "[\"requiredSecurityClearance\"]"
+        ]
+      }
+    ]
+  }
+]

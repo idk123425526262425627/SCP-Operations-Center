@@ -1,0 +1,170 @@
+[
+  {
+    "id": "column.public.Personnel.foundationClass",
+    "label": "Add column \"foundationClass\" to \"Personnel\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "foundationClass",
+        "table": "Personnel"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"foundationClass\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Personnel",
+          "foundationClass"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "column \"foundationClass\" on \"Personnel\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"foundationClass\"",
+        "sql": "ALTER TABLE \"public\".\"Personnel\" ADD COLUMN \"foundationClass\" text"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"foundationClass\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Personnel",
+          "foundationClass"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "column \"foundationClass\" on \"Personnel\""
+        }
+      },
+      {
+        "description": "verify column \"foundationClass\" has type \"text\"",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_attribute\" AS \"a\" INNER JOIN \"pg_class\" AS \"c\" ON \"c\".\"oid\" = \"a\".\"attrelid\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"relnamespace\" WHERE (\"n\".\"nspname\" = $1 AND \"c\".\"relname\" = $2 AND \"a\".\"attname\" = $3 AND (format_type(\"a\".\"atttypid\", \"a\".\"atttypmod\")) = $4 AND NOT (\"a\".\"attisdropped\"))) AS \"result\"",
+        "params": [
+          "public",
+          "Personnel",
+          "foundationClass",
+          "text"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.public.Personnel.foundationTitle",
+    "label": "Add column \"foundationTitle\" to \"Personnel\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "foundationTitle",
+        "table": "Personnel"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"foundationTitle\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Personnel",
+          "foundationTitle"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "column \"foundationTitle\" on \"Personnel\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"foundationTitle\"",
+        "sql": "ALTER TABLE \"public\".\"Personnel\" ADD COLUMN \"foundationTitle\" text"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"foundationTitle\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Personnel",
+          "foundationTitle"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "column \"foundationTitle\" on \"Personnel\""
+        }
+      },
+      {
+        "description": "verify column \"foundationTitle\" has type \"text\"",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_attribute\" AS \"a\" INNER JOIN \"pg_class\" AS \"c\" ON \"c\".\"oid\" = \"a\".\"attrelid\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"relnamespace\" WHERE (\"n\".\"nspname\" = $1 AND \"c\".\"relname\" = $2 AND \"a\".\"attname\" = $3 AND (format_type(\"a\".\"atttypid\", \"a\".\"atttypmod\")) = $4 AND NOT (\"a\".\"attisdropped\"))) AS \"result\"",
+        "params": [
+          "public",
+          "Personnel",
+          "foundationTitle",
+          "text"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Personnel.Personnel_foundationClass_idx_32a933e2",
+    "label": "Create index \"Personnel_foundationClass_idx_32a933e2\" on \"Personnel\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Personnel_foundationClass_idx_32a933e2",
+        "table": "Personnel"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Personnel_foundationClass_idx_32a933e2\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Personnel_foundationClass_idx_32a933e2\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"Personnel_foundationClass_idx_32a933e2\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Personnel_foundationClass_idx_32a933e2\"",
+        "sql": "CREATE INDEX \"Personnel_foundationClass_idx_32a933e2\" ON \"public\".\"Personnel\" (\"foundationClass\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Personnel_foundationClass_idx_32a933e2\" exists on \"Personnel\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"Personnel_foundationClass_idx_32a933e2\"",
+          "i",
+          "I",
+          "\"public\".\"Personnel\"",
+          "btree",
+          "[\"foundationClass\"]"
+        ]
+      }
+    ]
+  }
+]

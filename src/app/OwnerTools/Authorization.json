@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "authorizedUsers": [
+    {
+      "email": "memecraft2k@gmail.com",
+      "class": "Administrator",
+      "title": "System Administrator",
+      "permissions": [
+        "OWNER_TOOLS",
+        "MANAGE_AUTHORIZATION",
+        "MANAGE_PERSONNEL",
+        "MANAGE_DEPARTMENTS",
+        "MANAGE_DISCIPLINARY",
+        "MANAGE_WHITELIST",
+        "VIEW_LOGS"
+      ],
+      "enabled": true
+    }
+  ]
+}

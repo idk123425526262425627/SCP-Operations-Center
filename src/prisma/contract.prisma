@@ -1,0 +1,182 @@
+
+// use prisma-8
+
+model Department {
+  id          Int         @id @default(autoincrement())
+  name        String      @unique
+  code        String      @unique
+  description String?
+  isActive    Boolean     @default(true)
+
+  personnel   Personnel[]
+  ranks       Rank[]
+
+  createdAt   DateTime    @default(now()) @onCreate(now())
+  updatedAt   temporal.UpdatedAt
+}
+
+model Rank {
+  id                         Int         @id @default(autoincrement())
+  name                       String
+  code                       String      @unique
+  description                String?
+  sortOrder                  Int         @default(0)
+
+  // Minimum security clearance required for this rank.
+  // Values: O5, LEVEL_4, LEVEL_3, LEVEL_2, LEVEL_1, LEVEL_0
+  requiredSecurityClearance  String      @default("LEVEL_0")
+
+  isActive                   Boolean     @default(true)
+
+  departmentId               Int?
+  department                 Department? @relation(fields: [departmentId], references: [id])
+
+  personnel                  Personnel[]
+
+  createdAt                  DateTime    @default(now()) @onCreate(now())
+  updatedAt                  temporal.UpdatedAt
+
+  @@index([departmentId])
+  @@index([requiredSecurityClearance])
+}
+
+model Personnel {
+  id                    Int         @id @default(autoincrement())
+
+  // Better Auth account link
+  authUserId            String      @unique
+
+  // Roblox account information
+  robloxUserId          String?     @unique
+  robloxUsername        String?
+
+  // Personnel identification
+  personnelNumber       String?     @unique
+  displayName           String?
+  status                String      @default("ACTIVE")
+
+  // Foundation identity
+  // Examples: Administrator, O5, Researcher, Security Personnel, Class-D
+  foundationClass       String?
+  foundationTitle       String?
+
+  // Organizational authority
+  // Values: HIGHEST, VERY_HIGH, HIGH, ELEVATED, STANDARD, LIMITED, NONE
+  authorityClassification String?
+
+  // Security clearance
+  // Values: O5, LEVEL_4, LEVEL_3, LEVEL_2, LEVEL_1, LEVEL_0
+  securityClearance     String?
+
+  // Organizational assignments
+  departmentId          Int?
+  department            Department? @relation(fields: [departmentId], references: [id])
+
+  rankId                Int?
+  rank                  Rank?       @relation(fields: [rankId], references: [id])
+
+  // Protected system ownership
+  isSystemProtected     Boolean     @default(false)
+
+  // Roblox onboarding tracking
+  firstSeenAt           DateTime?
+  lastSeenAt            DateTime?
+  welcomeMessageSentAt  DateTime?
+
+  // Related records
+  records               PersonnelRecord[]
+  history               PersonnelHistory[]
+  permissionGrants      PersonnelPermissionGrant[]
+
+  createdAt             DateTime    @default(now()) @onCreate(now())
+  updatedAt             temporal.UpdatedAt
+
+  @@index([status])
+  @@index([departmentId])
+  @@index([rankId])
+  @@index([foundationClass])
+  @@index([authorityClassification])
+  @@index([securityClearance])
+}
+
+model PersonnelRecord {
+  id                          Int        @id @default(autoincrement())
+
+  personnelId                 Int
+  personnel                   Personnel  @relation(fields: [personnelId], references: [id])
+
+  recordType                  String
+  title                       String
+  content                     String
+
+  // Minimum security clearance required to access this record.
+  // Values: O5, LEVEL_4, LEVEL_3, LEVEL_2, LEVEL_1, LEVEL_0
+  minimumViewSecurityClearance String     @default("LEVEL_2")
+  minimumEditSecurityClearance String     @default("LEVEL_4")
+
+  createdByAuthUserId         String
+  lastEditedByAuthUserId      String?
+
+  isArchived                  Boolean    @default(false)
+
+  createdAt                   DateTime   @default(now()) @onCreate(now())
+  updatedAt                   temporal.UpdatedAt
+
+  @@index([personnelId])
+  @@index([recordType])
+  @@index([minimumViewSecurityClearance])
+  @@index([minimumEditSecurityClearance])
+}
+
+model PersonnelHistory {
+  id                 Int        @id @default(autoincrement())
+
+  personnelId        Int
+  personnel          Personnel  @relation(fields: [personnelId], references: [id])
+
+  eventType          String
+  title              String
+  description        String?
+
+  previousValue      String?
+  newValue           String?
+
+  actorAuthUserId    String
+
+  createdAt          DateTime   @default(now()) @onCreate(now())
+
+  @@index([personnelId])
+  @@index([eventType])
+}
+
+model Permission {
+  id              Int                         @id @default(autoincrement())
+  key             String                      @unique
+  name            String
+  description     String?
+  isActive        Boolean                     @default(true)
+
+  grants          PersonnelPermissionGrant[]
+
+  createdAt       DateTime                    @default(now()) @onCreate(now())
+  updatedAt       temporal.UpdatedAt
+}
+
+model PersonnelPermissionGrant {
+  id                    Int         @id @default(autoincrement())
+
+  personnelId           Int
+  personnel             Personnel   @relation(fields: [personnelId], references: [id])
+
+  permissionId          Int
+  permission            Permission  @relation(fields: [permissionId], references: [id])
+
+  grantedByAuthUserId   String
+  isActive              Boolean     @default(true)
+
+  createdAt             DateTime    @default(now()) @onCreate(now())
+  updatedAt             temporal.UpdatedAt
+
+  @@unique([personnelId, permissionId])
+  @@index([personnelId])
+}

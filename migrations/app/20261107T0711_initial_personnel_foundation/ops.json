@@ -1,0 +1,1638 @@
+[
+  {
+    "id": "schema.public",
+    "label": "Create schema \"public\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres"
+    },
+    "precheck": [],
+    "execute": [
+      {
+        "description": "Create schema \"public\"",
+        "sql": "CREATE SCHEMA IF NOT EXISTS \"public\"",
+        "params": []
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "table.Department",
+    "label": "Create table \"Department\"",
+    "summary": "Creates table \"Department\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Department"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Department\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Department\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"Department\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Department\"",
+        "sql": "CREATE TABLE \"public\".\"Department\" (\n  \"code\" text NOT NULL,\n  \"createdAt\" timestamptz(3) DEFAULT (now()) NOT NULL,\n  \"description\" text,\n  \"id\" SERIAL NOT NULL,\n  \"isActive\" bool DEFAULT true NOT NULL,\n  \"name\" text NOT NULL,\n  \"updatedAt\" timestamptz(3) NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Department\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3))) AS \"result\"",
+        "params": [
+          "\"public\".\"Department\"",
+          "r",
+          "p"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"Department\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "table.Permission",
+    "label": "Create table \"Permission\"",
+    "summary": "Creates table \"Permission\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Permission"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Permission\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Permission\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"Permission\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Permission\"",
+        "sql": "CREATE TABLE \"public\".\"Permission\" (\n  \"createdAt\" timestamptz(3) DEFAULT (now()) NOT NULL,\n  \"description\" text,\n  \"id\" SERIAL NOT NULL,\n  \"isActive\" bool DEFAULT true NOT NULL,\n  \"key\" text NOT NULL,\n  \"name\" text NOT NULL,\n  \"updatedAt\" timestamptz(3) NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Permission\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3))) AS \"result\"",
+        "params": [
+          "\"public\".\"Permission\"",
+          "r",
+          "p"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"Permission\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "table.Personnel",
+    "label": "Create table \"Personnel\"",
+    "summary": "Creates table \"Personnel\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Personnel"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Personnel\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Personnel\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"Personnel\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Personnel\"",
+        "sql": "CREATE TABLE \"public\".\"Personnel\" (\n  \"authUserId\" text NOT NULL,\n  \"classification\" text DEFAULT 'CLASS_D' NOT NULL,\n  \"clearance\" int4 DEFAULT 0 NOT NULL,\n  \"createdAt\" timestamptz(3) DEFAULT (now()) NOT NULL,\n  \"departmentId\" int4,\n  \"displayName\" text,\n  \"firstSeenAt\" timestamptz(3),\n  \"id\" SERIAL NOT NULL,\n  \"isSystemProtected\" bool DEFAULT false NOT NULL,\n  \"lastSeenAt\" timestamptz(3),\n  \"personnelNumber\" text,\n  \"rankId\" int4,\n  \"robloxUserId\" text,\n  \"robloxUsername\" text,\n  \"status\" text DEFAULT 'ACTIVE' NOT NULL,\n  \"updatedAt\" timestamptz(3) NOT NULL,\n  \"welcomeMessageSentAt\" timestamptz(3),\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Personnel\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3))) AS \"result\"",
+        "params": [
+          "\"public\".\"Personnel\"",
+          "r",
+          "p"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"Personnel\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "table.PersonnelHistory",
+    "label": "Create table \"PersonnelHistory\"",
+    "summary": "Creates table \"PersonnelHistory\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "PersonnelHistory"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"PersonnelHistory\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"PersonnelHistory\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"PersonnelHistory\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"PersonnelHistory\"",
+        "sql": "CREATE TABLE \"public\".\"PersonnelHistory\" (\n  \"actorAuthUserId\" text NOT NULL,\n  \"createdAt\" timestamptz(3) DEFAULT (now()) NOT NULL,\n  \"description\" text,\n  \"eventType\" text NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"newValue\" text,\n  \"personnelId\" int4 NOT NULL,\n  \"previousValue\" text,\n  \"title\" text NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"PersonnelHistory\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3))) AS \"result\"",
+        "params": [
+          "\"public\".\"PersonnelHistory\"",
+          "r",
+          "p"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"PersonnelHistory\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "table.PersonnelPermissionGrant",
+    "label": "Create table \"PersonnelPermissionGrant\"",
+    "summary": "Creates table \"PersonnelPermissionGrant\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "PersonnelPermissionGrant"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"PersonnelPermissionGrant\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"PersonnelPermissionGrant\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"PersonnelPermissionGrant\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"PersonnelPermissionGrant\"",
+        "sql": "CREATE TABLE \"public\".\"PersonnelPermissionGrant\" (\n  \"createdAt\" timestamptz(3) DEFAULT (now()) NOT NULL,\n  \"grantedByAuthUserId\" text NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"isActive\" bool DEFAULT true NOT NULL,\n  \"permissionId\" int4 NOT NULL,\n  \"personnelId\" int4 NOT NULL,\n  \"updatedAt\" timestamptz(3) NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"PersonnelPermissionGrant\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3))) AS \"result\"",
+        "params": [
+          "\"public\".\"PersonnelPermissionGrant\"",
+          "r",
+          "p"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"PersonnelPermissionGrant\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "table.PersonnelRecord",
+    "label": "Create table \"PersonnelRecord\"",
+    "summary": "Creates table \"PersonnelRecord\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "PersonnelRecord"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"PersonnelRecord\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"PersonnelRecord\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"PersonnelRecord\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"PersonnelRecord\"",
+        "sql": "CREATE TABLE \"public\".\"PersonnelRecord\" (\n  \"content\" text NOT NULL,\n  \"createdAt\" timestamptz(3) DEFAULT (now()) NOT NULL,\n  \"createdByAuthUserId\" text NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"isArchived\" bool DEFAULT false NOT NULL,\n  \"lastEditedByAuthUserId\" text,\n  \"minimumEditClearance\" int4 DEFAULT 4 NOT NULL,\n  \"minimumViewClearance\" int4 DEFAULT 2 NOT NULL,\n  \"personnelId\" int4 NOT NULL,\n  \"recordType\" text NOT NULL,\n  \"title\" text NOT NULL,\n  \"updatedAt\" timestamptz(3) NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"PersonnelRecord\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3))) AS \"result\"",
+        "params": [
+          "\"public\".\"PersonnelRecord\"",
+          "r",
+          "p"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"PersonnelRecord\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "table.Rank",
+    "label": "Create table \"Rank\"",
+    "summary": "Creates table \"Rank\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Rank"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Rank\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Rank\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"Rank\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Rank\"",
+        "sql": "CREATE TABLE \"public\".\"Rank\" (\n  \"code\" text NOT NULL,\n  \"createdAt\" timestamptz(3) DEFAULT (now()) NOT NULL,\n  \"departmentId\" int4,\n  \"description\" text,\n  \"id\" SERIAL NOT NULL,\n  \"isActive\" bool DEFAULT true NOT NULL,\n  \"name\" text NOT NULL,\n  \"requiredClearance\" int4 DEFAULT 0 NOT NULL,\n  \"sortOrder\" int4 DEFAULT 0 NOT NULL,\n  \"updatedAt\" timestamptz(3) NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Rank\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3))) AS \"result\"",
+        "params": [
+          "\"public\".\"Rank\"",
+          "r",
+          "p"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"Rank\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "unique.Department.Department_name_key",
+    "label": "Add unique constraint on \"Department\" (name)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "Department_name_key",
+        "table": "Department"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"Department_name_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Department_name_key",
+          "public",
+          "\"public\".\"Department\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "constraint \"Department_name_key\" on \"Department\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"Department_name_key\"",
+        "sql": "ALTER TABLE \"public\".\"Department\" ADD CONSTRAINT \"Department_name_key\" UNIQUE (\"name\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify unique constraint \"Department_name_key\" exists on (name)",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb)) AS \"result\"",
+        "params": [
+          "Department_name_key",
+          "public",
+          "\"public\".\"Department\"",
+          "u",
+          "[\"name\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.Department.Department_code_key",
+    "label": "Add unique constraint on \"Department\" (code)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "Department_code_key",
+        "table": "Department"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"Department_code_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Department_code_key",
+          "public",
+          "\"public\".\"Department\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "constraint \"Department_code_key\" on \"Department\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"Department_code_key\"",
+        "sql": "ALTER TABLE \"public\".\"Department\" ADD CONSTRAINT \"Department_code_key\" UNIQUE (\"code\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify unique constraint \"Department_code_key\" exists on (code)",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb)) AS \"result\"",
+        "params": [
+          "Department_code_key",
+          "public",
+          "\"public\".\"Department\"",
+          "u",
+          "[\"code\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.Permission.Permission_key_key",
+    "label": "Add unique constraint on \"Permission\" (key)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "Permission_key_key",
+        "table": "Permission"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"Permission_key_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Permission_key_key",
+          "public",
+          "\"public\".\"Permission\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "constraint \"Permission_key_key\" on \"Permission\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"Permission_key_key\"",
+        "sql": "ALTER TABLE \"public\".\"Permission\" ADD CONSTRAINT \"Permission_key_key\" UNIQUE (\"key\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify unique constraint \"Permission_key_key\" exists on (key)",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb)) AS \"result\"",
+        "params": [
+          "Permission_key_key",
+          "public",
+          "\"public\".\"Permission\"",
+          "u",
+          "[\"key\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.Personnel.Personnel_authUserId_key",
+    "label": "Add unique constraint on \"Personnel\" (authUserId)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "Personnel_authUserId_key",
+        "table": "Personnel"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"Personnel_authUserId_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Personnel_authUserId_key",
+          "public",
+          "\"public\".\"Personnel\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "constraint \"Personnel_authUserId_key\" on \"Personnel\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"Personnel_authUserId_key\"",
+        "sql": "ALTER TABLE \"public\".\"Personnel\" ADD CONSTRAINT \"Personnel_authUserId_key\" UNIQUE (\"authUserId\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify unique constraint \"Personnel_authUserId_key\" exists on (authUserId)",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb)) AS \"result\"",
+        "params": [
+          "Personnel_authUserId_key",
+          "public",
+          "\"public\".\"Personnel\"",
+          "u",
+          "[\"authUserId\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.Personnel.Personnel_robloxUserId_key",
+    "label": "Add unique constraint on \"Personnel\" (robloxUserId)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "Personnel_robloxUserId_key",
+        "table": "Personnel"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"Personnel_robloxUserId_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Personnel_robloxUserId_key",
+          "public",
+          "\"public\".\"Personnel\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "constraint \"Personnel_robloxUserId_key\" on \"Personnel\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"Personnel_robloxUserId_key\"",
+        "sql": "ALTER TABLE \"public\".\"Personnel\" ADD CONSTRAINT \"Personnel_robloxUserId_key\" UNIQUE (\"robloxUserId\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify unique constraint \"Personnel_robloxUserId_key\" exists on (robloxUserId)",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb)) AS \"result\"",
+        "params": [
+          "Personnel_robloxUserId_key",
+          "public",
+          "\"public\".\"Personnel\"",
+          "u",
+          "[\"robloxUserId\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.Personnel.Personnel_personnelNumber_key",
+    "label": "Add unique constraint on \"Personnel\" (personnelNumber)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "Personnel_personnelNumber_key",
+        "table": "Personnel"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"Personnel_personnelNumber_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Personnel_personnelNumber_key",
+          "public",
+          "\"public\".\"Personnel\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "constraint \"Personnel_personnelNumber_key\" on \"Personnel\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"Personnel_personnelNumber_key\"",
+        "sql": "ALTER TABLE \"public\".\"Personnel\" ADD CONSTRAINT \"Personnel_personnelNumber_key\" UNIQUE (\"personnelNumber\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify unique constraint \"Personnel_personnelNumber_key\" exists on (personnelNumber)",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb)) AS \"result\"",
+        "params": [
+          "Personnel_personnelNumber_key",
+          "public",
+          "\"public\".\"Personnel\"",
+          "u",
+          "[\"personnelNumber\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.PersonnelPermissionGrant.PersonnelPermissionGrant_personnelId_permissionId_key",
+    "label": "Add unique constraint on \"PersonnelPermissionGrant\" (personnelId, permissionId)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "PersonnelPermissionGrant_personnelId_permissionId_key",
+        "table": "PersonnelPermissionGrant"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"PersonnelPermissionGrant_personnelId_permissionId_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "PersonnelPermissionGrant_personnelId_permissionId_key",
+          "public",
+          "\"public\".\"PersonnelPermissionGrant\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "constraint \"PersonnelPermissionGrant_personnelId_permissionId_key\" on \"PersonnelPermissionGrant\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"PersonnelPermissionGrant_personnelId_permissionId_key\"",
+        "sql": "ALTER TABLE \"public\".\"PersonnelPermissionGrant\" ADD CONSTRAINT \"PersonnelPermissionGrant_personnelId_permissionId_key\" UNIQUE (\"personnelId\", \"permissionId\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify unique constraint \"PersonnelPermissionGrant_personnelId_permissionId_key\" exists on (personnelId, permissionId)",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb)) AS \"result\"",
+        "params": [
+          "PersonnelPermissionGrant_personnelId_permissionId_key",
+          "public",
+          "\"public\".\"PersonnelPermissionGrant\"",
+          "u",
+          "[\"personnelId\",\"permissionId\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.Rank.Rank_code_key",
+    "label": "Add unique constraint on \"Rank\" (code)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "Rank_code_key",
+        "table": "Rank"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"Rank_code_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Rank_code_key",
+          "public",
+          "\"public\".\"Rank\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "constraint \"Rank_code_key\" on \"Rank\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"Rank_code_key\"",
+        "sql": "ALTER TABLE \"public\".\"Rank\" ADD CONSTRAINT \"Rank_code_key\" UNIQUE (\"code\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify unique constraint \"Rank_code_key\" exists on (code)",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb)) AS \"result\"",
+        "params": [
+          "Rank_code_key",
+          "public",
+          "\"public\".\"Rank\"",
+          "u",
+          "[\"code\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Personnel.Personnel_clearance_idx_fbfe5df6",
+    "label": "Create index \"Personnel_clearance_idx_fbfe5df6\" on \"Personnel\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Personnel_clearance_idx_fbfe5df6",
+        "table": "Personnel"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Personnel_clearance_idx_fbfe5df6\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Personnel_clearance_idx_fbfe5df6\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"Personnel_clearance_idx_fbfe5df6\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Personnel_clearance_idx_fbfe5df6\"",
+        "sql": "CREATE INDEX \"Personnel_clearance_idx_fbfe5df6\" ON \"public\".\"Personnel\" (\"clearance\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Personnel_clearance_idx_fbfe5df6\" exists on \"Personnel\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"Personnel_clearance_idx_fbfe5df6\"",
+          "i",
+          "I",
+          "\"public\".\"Personnel\"",
+          "btree",
+          "[\"clearance\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Personnel.Personnel_departmentId_idx_8e261ed8",
+    "label": "Create index \"Personnel_departmentId_idx_8e261ed8\" on \"Personnel\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Personnel_departmentId_idx_8e261ed8",
+        "table": "Personnel"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Personnel_departmentId_idx_8e261ed8\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Personnel_departmentId_idx_8e261ed8\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"Personnel_departmentId_idx_8e261ed8\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Personnel_departmentId_idx_8e261ed8\"",
+        "sql": "CREATE INDEX \"Personnel_departmentId_idx_8e261ed8\" ON \"public\".\"Personnel\" (\"departmentId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Personnel_departmentId_idx_8e261ed8\" exists on \"Personnel\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"Personnel_departmentId_idx_8e261ed8\"",
+          "i",
+          "I",
+          "\"public\".\"Personnel\"",
+          "btree",
+          "[\"departmentId\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Personnel.Personnel_rankId_idx_b0bc323c",
+    "label": "Create index \"Personnel_rankId_idx_b0bc323c\" on \"Personnel\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Personnel_rankId_idx_b0bc323c",
+        "table": "Personnel"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Personnel_rankId_idx_b0bc323c\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Personnel_rankId_idx_b0bc323c\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"Personnel_rankId_idx_b0bc323c\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Personnel_rankId_idx_b0bc323c\"",
+        "sql": "CREATE INDEX \"Personnel_rankId_idx_b0bc323c\" ON \"public\".\"Personnel\" (\"rankId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Personnel_rankId_idx_b0bc323c\" exists on \"Personnel\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"Personnel_rankId_idx_b0bc323c\"",
+          "i",
+          "I",
+          "\"public\".\"Personnel\"",
+          "btree",
+          "[\"rankId\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Personnel.Personnel_status_idx_e98638ab",
+    "label": "Create index \"Personnel_status_idx_e98638ab\" on \"Personnel\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Personnel_status_idx_e98638ab",
+        "table": "Personnel"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Personnel_status_idx_e98638ab\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Personnel_status_idx_e98638ab\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"Personnel_status_idx_e98638ab\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Personnel_status_idx_e98638ab\"",
+        "sql": "CREATE INDEX \"Personnel_status_idx_e98638ab\" ON \"public\".\"Personnel\" (\"status\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Personnel_status_idx_e98638ab\" exists on \"Personnel\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"Personnel_status_idx_e98638ab\"",
+          "i",
+          "I",
+          "\"public\".\"Personnel\"",
+          "btree",
+          "[\"status\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.PersonnelHistory.PersonnelHistory_eventType_idx_e4cf7742",
+    "label": "Create index \"PersonnelHistory_eventType_idx_e4cf7742\" on \"PersonnelHistory\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "PersonnelHistory_eventType_idx_e4cf7742",
+        "table": "PersonnelHistory"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"PersonnelHistory_eventType_idx_e4cf7742\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"PersonnelHistory_eventType_idx_e4cf7742\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"PersonnelHistory_eventType_idx_e4cf7742\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"PersonnelHistory_eventType_idx_e4cf7742\"",
+        "sql": "CREATE INDEX \"PersonnelHistory_eventType_idx_e4cf7742\" ON \"public\".\"PersonnelHistory\" (\"eventType\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"PersonnelHistory_eventType_idx_e4cf7742\" exists on \"PersonnelHistory\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"PersonnelHistory_eventType_idx_e4cf7742\"",
+          "i",
+          "I",
+          "\"public\".\"PersonnelHistory\"",
+          "btree",
+          "[\"eventType\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.PersonnelHistory.PersonnelHistory_personnelId_idx_3649ff23",
+    "label": "Create index \"PersonnelHistory_personnelId_idx_3649ff23\" on \"PersonnelHistory\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "PersonnelHistory_personnelId_idx_3649ff23",
+        "table": "PersonnelHistory"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"PersonnelHistory_personnelId_idx_3649ff23\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"PersonnelHistory_personnelId_idx_3649ff23\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"PersonnelHistory_personnelId_idx_3649ff23\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"PersonnelHistory_personnelId_idx_3649ff23\"",
+        "sql": "CREATE INDEX \"PersonnelHistory_personnelId_idx_3649ff23\" ON \"public\".\"PersonnelHistory\" (\"personnelId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"PersonnelHistory_personnelId_idx_3649ff23\" exists on \"PersonnelHistory\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"PersonnelHistory_personnelId_idx_3649ff23\"",
+          "i",
+          "I",
+          "\"public\".\"PersonnelHistory\"",
+          "btree",
+          "[\"personnelId\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.PersonnelPermissionGrant.PersonnelPermissionGrant_permissionId_idx_f46fcdf5",
+    "label": "Create index \"PersonnelPermissionGrant_permissionId_idx_f46fcdf5\" on \"PersonnelPermissionGrant\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "PersonnelPermissionGrant_permissionId_idx_f46fcdf5",
+        "table": "PersonnelPermissionGrant"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"PersonnelPermissionGrant_permissionId_idx_f46fcdf5\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"PersonnelPermissionGrant_permissionId_idx_f46fcdf5\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"PersonnelPermissionGrant_permissionId_idx_f46fcdf5\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"PersonnelPermissionGrant_permissionId_idx_f46fcdf5\"",
+        "sql": "CREATE INDEX \"PersonnelPermissionGrant_permissionId_idx_f46fcdf5\" ON \"public\".\"PersonnelPermissionGrant\" (\"permissionId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"PersonnelPermissionGrant_permissionId_idx_f46fcdf5\" exists on \"PersonnelPermissionGrant\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"PersonnelPermissionGrant_permissionId_idx_f46fcdf5\"",
+          "i",
+          "I",
+          "\"public\".\"PersonnelPermissionGrant\"",
+          "btree",
+          "[\"permissionId\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.PersonnelPermissionGrant.PersonnelPermissionGrant_personnelId_idx_3649ff23",
+    "label": "Create index \"PersonnelPermissionGrant_personnelId_idx_3649ff23\" on \"PersonnelPermissionGrant\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "PersonnelPermissionGrant_personnelId_idx_3649ff23",
+        "table": "PersonnelPermissionGrant"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"PersonnelPermissionGrant_personnelId_idx_3649ff23\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"PersonnelPermissionGrant_personnelId_idx_3649ff23\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"PersonnelPermissionGrant_personnelId_idx_3649ff23\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"PersonnelPermissionGrant_personnelId_idx_3649ff23\"",
+        "sql": "CREATE INDEX \"PersonnelPermissionGrant_personnelId_idx_3649ff23\" ON \"public\".\"PersonnelPermissionGrant\" (\"personnelId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"PersonnelPermissionGrant_personnelId_idx_3649ff23\" exists on \"PersonnelPermissionGrant\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"PersonnelPermissionGrant_personnelId_idx_3649ff23\"",
+          "i",
+          "I",
+          "\"public\".\"PersonnelPermissionGrant\"",
+          "btree",
+          "[\"personnelId\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.PersonnelRecord.PersonnelRecord_personnelId_idx_3649ff23",
+    "label": "Create index \"PersonnelRecord_personnelId_idx_3649ff23\" on \"PersonnelRecord\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "PersonnelRecord_personnelId_idx_3649ff23",
+        "table": "PersonnelRecord"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"PersonnelRecord_personnelId_idx_3649ff23\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"PersonnelRecord_personnelId_idx_3649ff23\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"PersonnelRecord_personnelId_idx_3649ff23\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"PersonnelRecord_personnelId_idx_3649ff23\"",
+        "sql": "CREATE INDEX \"PersonnelRecord_personnelId_idx_3649ff23\" ON \"public\".\"PersonnelRecord\" (\"personnelId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"PersonnelRecord_personnelId_idx_3649ff23\" exists on \"PersonnelRecord\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"PersonnelRecord_personnelId_idx_3649ff23\"",
+          "i",
+          "I",
+          "\"public\".\"PersonnelRecord\"",
+          "btree",
+          "[\"personnelId\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.PersonnelRecord.PersonnelRecord_recordType_idx_38efc843",
+    "label": "Create index \"PersonnelRecord_recordType_idx_38efc843\" on \"PersonnelRecord\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "PersonnelRecord_recordType_idx_38efc843",
+        "table": "PersonnelRecord"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"PersonnelRecord_recordType_idx_38efc843\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"PersonnelRecord_recordType_idx_38efc843\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"PersonnelRecord_recordType_idx_38efc843\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"PersonnelRecord_recordType_idx_38efc843\"",
+        "sql": "CREATE INDEX \"PersonnelRecord_recordType_idx_38efc843\" ON \"public\".\"PersonnelRecord\" (\"recordType\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"PersonnelRecord_recordType_idx_38efc843\" exists on \"PersonnelRecord\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"PersonnelRecord_recordType_idx_38efc843\"",
+          "i",
+          "I",
+          "\"public\".\"PersonnelRecord\"",
+          "btree",
+          "[\"recordType\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Rank.Rank_departmentId_idx_8e261ed8",
+    "label": "Create index \"Rank_departmentId_idx_8e261ed8\" on \"Rank\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Rank_departmentId_idx_8e261ed8",
+        "table": "Rank"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Rank_departmentId_idx_8e261ed8\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Rank_departmentId_idx_8e261ed8\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"Rank_departmentId_idx_8e261ed8\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Rank_departmentId_idx_8e261ed8\"",
+        "sql": "CREATE INDEX \"Rank_departmentId_idx_8e261ed8\" ON \"public\".\"Rank\" (\"departmentId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Rank_departmentId_idx_8e261ed8\" exists on \"Rank\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"Rank_departmentId_idx_8e261ed8\"",
+          "i",
+          "I",
+          "\"public\".\"Rank\"",
+          "btree",
+          "[\"departmentId\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Personnel.Personnel_departmentId_fkey",
+    "label": "Add foreign key \"Personnel_departmentId_fkey\" on \"Personnel\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Personnel_departmentId_fkey",
+        "table": "Personnel"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Personnel_departmentId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Personnel_departmentId_fkey",
+          "public",
+          "\"public\".\"Personnel\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "FK \"Personnel_departmentId_fkey\" on \"Personnel\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Personnel_departmentId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Personnel\"\nADD CONSTRAINT \"Personnel_departmentId_fkey\"\nFOREIGN KEY (\"departmentId\")\nREFERENCES \"public\".\"Department\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Personnel_departmentId_fkey\" exists with the planned columns, referenced table and actions",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb AND \"c\".\"confrelid\" = to_regclass($6) AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"confkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"confrelid\" AND key_attribute.attnum = key_column.attnum) = ($7)::jsonb AND \"c\".\"confdeltype\" = $8 AND \"c\".\"confupdtype\" = $9)) AS \"result\"",
+        "params": [
+          "Personnel_departmentId_fkey",
+          "public",
+          "\"public\".\"Personnel\"",
+          "f",
+          "[\"departmentId\"]",
+          "\"public\".\"Department\"",
+          "[\"id\"]",
+          "a",
+          "a"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Personnel.Personnel_rankId_fkey",
+    "label": "Add foreign key \"Personnel_rankId_fkey\" on \"Personnel\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Personnel_rankId_fkey",
+        "table": "Personnel"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Personnel_rankId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Personnel_rankId_fkey",
+          "public",
+          "\"public\".\"Personnel\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "FK \"Personnel_rankId_fkey\" on \"Personnel\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Personnel_rankId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Personnel\"\nADD CONSTRAINT \"Personnel_rankId_fkey\"\nFOREIGN KEY (\"rankId\")\nREFERENCES \"public\".\"Rank\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Personnel_rankId_fkey\" exists with the planned columns, referenced table and actions",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb AND \"c\".\"confrelid\" = to_regclass($6) AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"confkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"confrelid\" AND key_attribute.attnum = key_column.attnum) = ($7)::jsonb AND \"c\".\"confdeltype\" = $8 AND \"c\".\"confupdtype\" = $9)) AS \"result\"",
+        "params": [
+          "Personnel_rankId_fkey",
+          "public",
+          "\"public\".\"Personnel\"",
+          "f",
+          "[\"rankId\"]",
+          "\"public\".\"Rank\"",
+          "[\"id\"]",
+          "a",
+          "a"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.PersonnelHistory.PersonnelHistory_personnelId_fkey",
+    "label": "Add foreign key \"PersonnelHistory_personnelId_fkey\" on \"PersonnelHistory\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "PersonnelHistory_personnelId_fkey",
+        "table": "PersonnelHistory"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"PersonnelHistory_personnelId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "PersonnelHistory_personnelId_fkey",
+          "public",
+          "\"public\".\"PersonnelHistory\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "FK \"PersonnelHistory_personnelId_fkey\" on \"PersonnelHistory\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"PersonnelHistory_personnelId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"PersonnelHistory\"\nADD CONSTRAINT \"PersonnelHistory_personnelId_fkey\"\nFOREIGN KEY (\"personnelId\")\nREFERENCES \"public\".\"Personnel\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"PersonnelHistory_personnelId_fkey\" exists with the planned columns, referenced table and actions",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb AND \"c\".\"confrelid\" = to_regclass($6) AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"confkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"confrelid\" AND key_attribute.attnum = key_column.attnum) = ($7)::jsonb AND \"c\".\"confdeltype\" = $8 AND \"c\".\"confupdtype\" = $9)) AS \"result\"",
+        "params": [
+          "PersonnelHistory_personnelId_fkey",
+          "public",
+          "\"public\".\"PersonnelHistory\"",
+          "f",
+          "[\"personnelId\"]",
+          "\"public\".\"Personnel\"",
+          "[\"id\"]",
+          "a",
+          "a"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.PersonnelPermissionGrant.PersonnelPermissionGrant_personnelId_fkey",
+    "label": "Add foreign key \"PersonnelPermissionGrant_personnelId_fkey\" on \"PersonnelPermissionGrant\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "PersonnelPermissionGrant_personnelId_fkey",
+        "table": "PersonnelPermissionGrant"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"PersonnelPermissionGrant_personnelId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "PersonnelPermissionGrant_personnelId_fkey",
+          "public",
+          "\"public\".\"PersonnelPermissionGrant\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "FK \"PersonnelPermissionGrant_personnelId_fkey\" on \"PersonnelPermissionGrant\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"PersonnelPermissionGrant_personnelId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"PersonnelPermissionGrant\"\nADD CONSTRAINT \"PersonnelPermissionGrant_personnelId_fkey\"\nFOREIGN KEY (\"personnelId\")\nREFERENCES \"public\".\"Personnel\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"PersonnelPermissionGrant_personnelId_fkey\" exists with the planned columns, referenced table and actions",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb AND \"c\".\"confrelid\" = to_regclass($6) AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"confkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"confrelid\" AND key_attribute.attnum = key_column.attnum) = ($7)::jsonb AND \"c\".\"confdeltype\" = $8 AND \"c\".\"confupdtype\" = $9)) AS \"result\"",
+        "params": [
+          "PersonnelPermissionGrant_personnelId_fkey",
+          "public",
+          "\"public\".\"PersonnelPermissionGrant\"",
+          "f",
+          "[\"personnelId\"]",
+          "\"public\".\"Personnel\"",
+          "[\"id\"]",
+          "a",
+          "a"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.PersonnelPermissionGrant.PersonnelPermissionGrant_permissionId_fkey",
+    "label": "Add foreign key \"PersonnelPermissionGrant_permissionId_fkey\" on \"PersonnelPermissionGrant\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "PersonnelPermissionGrant_permissionId_fkey",
+        "table": "PersonnelPermissionGrant"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"PersonnelPermissionGrant_permissionId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "PersonnelPermissionGrant_permissionId_fkey",
+          "public",
+          "\"public\".\"PersonnelPermissionGrant\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "FK \"PersonnelPermissionGrant_permissionId_fkey\" on \"PersonnelPermissionGrant\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"PersonnelPermissionGrant_permissionId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"PersonnelPermissionGrant\"\nADD CONSTRAINT \"PersonnelPermissionGrant_permissionId_fkey\"\nFOREIGN KEY (\"permissionId\")\nREFERENCES \"public\".\"Permission\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"PersonnelPermissionGrant_permissionId_fkey\" exists with the planned columns, referenced table and actions",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb AND \"c\".\"confrelid\" = to_regclass($6) AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"confkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"confrelid\" AND key_attribute.attnum = key_column.attnum) = ($7)::jsonb AND \"c\".\"confdeltype\" = $8 AND \"c\".\"confupdtype\" = $9)) AS \"result\"",
+        "params": [
+          "PersonnelPermissionGrant_permissionId_fkey",
+          "public",
+          "\"public\".\"PersonnelPermissionGrant\"",
+          "f",
+          "[\"permissionId\"]",
+          "\"public\".\"Permission\"",
+          "[\"id\"]",
+          "a",
+          "a"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.PersonnelRecord.PersonnelRecord_personnelId_fkey",
+    "label": "Add foreign key \"PersonnelRecord_personnelId_fkey\" on \"PersonnelRecord\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "PersonnelRecord_personnelId_fkey",
+        "table": "PersonnelRecord"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"PersonnelRecord_personnelId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "PersonnelRecord_personnelId_fkey",
+          "public",
+          "\"public\".\"PersonnelRecord\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "FK \"PersonnelRecord_personnelId_fkey\" on \"PersonnelRecord\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"PersonnelRecord_personnelId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"PersonnelRecord\"\nADD CONSTRAINT \"PersonnelRecord_personnelId_fkey\"\nFOREIGN KEY (\"personnelId\")\nREFERENCES \"public\".\"Personnel\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"PersonnelRecord_personnelId_fkey\" exists with the planned columns, referenced table and actions",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb AND \"c\".\"confrelid\" = to_regclass($6) AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"confkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"confrelid\" AND key_attribute.attnum = key_column.attnum) = ($7)::jsonb AND \"c\".\"confdeltype\" = $8 AND \"c\".\"confupdtype\" = $9)) AS \"result\"",
+        "params": [
+          "PersonnelRecord_personnelId_fkey",
+          "public",
+          "\"public\".\"PersonnelRecord\"",
+          "f",
+          "[\"personnelId\"]",
+          "\"public\".\"Personnel\"",
+          "[\"id\"]",
+          "a",
+          "a"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Rank.Rank_departmentId_fkey",
+    "label": "Add foreign key \"Rank_departmentId_fkey\" on \"Rank\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Rank_departmentId_fkey",
+        "table": "Rank"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Rank_departmentId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Rank_departmentId_fkey",
+          "public",
+          "\"public\".\"Rank\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "FK \"Rank_departmentId_fkey\" on \"Rank\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Rank_departmentId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Rank\"\nADD CONSTRAINT \"Rank_departmentId_fkey\"\nFOREIGN KEY (\"departmentId\")\nREFERENCES \"public\".\"Department\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Rank_departmentId_fkey\" exists with the planned columns, referenced table and actions",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb AND \"c\".\"confrelid\" = to_regclass($6) AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"confkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"confrelid\" AND key_attribute.attnum = key_column.attnum) = ($7)::jsonb AND \"c\".\"confdeltype\" = $8 AND \"c\".\"confupdtype\" = $9)) AS \"result\"",
+        "params": [
+          "Rank_departmentId_fkey",
+          "public",
+          "\"public\".\"Rank\"",
+          "f",
+          "[\"departmentId\"]",
+          "\"public\".\"Department\"",
+          "[\"id\"]",
+          "a",
+          "a"
+        ]
+      }
+    ]
+  }
+]
